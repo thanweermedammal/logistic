@@ -13,11 +13,13 @@ import 'package:logistics/models/login_model.dart';
 class MapText extends StatefulWidget {
   List<DeliveryDetails> deliveryDetailsList = [];
   int index;
+  final runsheet;
   List<Login> loginList = [];
   MapText(
       {Key? key,
       required this.deliveryDetailsList,
       required this.index,
+      required this.runsheet,
       required this.loginList})
       : super(key: key);
 
@@ -115,6 +117,13 @@ class _MapTextState extends State<MapText> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    // mapController.dispose();
+    streamController.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -154,8 +163,19 @@ class _MapTextState extends State<MapText> {
                   child: GoogleMap(
                       myLocationEnabled: true,
                       buildingsEnabled: true,
+                      indoorViewEnabled: false,
+                      onMapCreated: (controller) {
+                        mapController = controller;
+                        setState(() {
+                          fetchAddressDetail(initPos!);
+                        });
+                      },
+                      onCameraMove: (CameraPosition pos) {
+                        streamController.add(pos.target);
+                      },
                       initialCameraPosition:
                           CameraPosition(target: initPos!, zoom: 13.5),
+                      mapType: MapType.normal,
                       polylines: {
                         Polyline(
                           polylineId: PolylineId("route"),
@@ -190,6 +210,7 @@ class _MapTextState extends State<MapText> {
                             deliveryDetailsList: widget.deliveryDetailsList,
                             index: widget.index,
                             loginList: widget.loginList,
+                            runsheet: widget.runsheet,
                           )));
             },
             style: ElevatedButton.styleFrom(

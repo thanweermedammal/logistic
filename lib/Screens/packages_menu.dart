@@ -38,7 +38,7 @@ class _PackagesMenuState extends State<PackagesMenu>
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: allShipmentController.allshipmentList!.isNotEmpty
+        itemCount: allShipmentController.allshipmentList != null
             ? allShipmentController.allshipmentList!.length
             : 0,
         itemBuilder: (context, index) {

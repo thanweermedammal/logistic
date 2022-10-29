@@ -10,8 +10,9 @@ import 'package:http/http.dart' as http;
 class DeliveryVerify extends StatelessWidget {
   List<DeliveryDetails> deliveryDetailsList = [];
   List<Login> loginList = [];
+  final runsheet;
   DeliveryVerify(
-      {Key? key, required this.deliveryDetailsList, required this.loginList})
+      {Key? key, required this.deliveryDetailsList, required this.loginList,required this.runsheet})
       : super(key: key);
 
   @override
@@ -206,8 +207,8 @@ class DeliveryVerify extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DeliveryDatasScreen(
-                                deliveryDetailsList: deliveryDetailsList,
-                                loginList: loginList,
+
+                                loginList: loginList, runsheet: runsheet,
                               )));
                 }
               }

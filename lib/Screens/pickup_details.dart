@@ -193,8 +193,10 @@ class _PickDetailsState extends State<PickDetails> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 8.0, left: 15),
+                                    const EdgeInsets.only(top: 8.0, left: 10),
                                 child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       flex: 2,

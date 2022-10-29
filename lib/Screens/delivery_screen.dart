@@ -199,7 +199,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                                       deliveryDetailsList:
                                                           deliveryDetailslist,
                                                       loginList:
-                                                          widget.loginList,
+                                                          widget.loginList, runsheet: _scanBarcode,
                                                     )));
                                       }
                                     }

@@ -140,7 +140,11 @@ class _PackageMenuCardState extends State<PackageMenuCard>
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 15),
                 child: Text(
-                  '${allShipmentController.customerDetailslist!.first.address}\n${allShipmentController.customerDetailslist!.first.city}',
+                  null !=
+                          allShipmentController
+                              .customerDetailslist?.first.address
+                      ? '${allShipmentController.customerDetailslist!.first.address}\n${allShipmentController.customerDetailslist!.first.city}'
+                      : '',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -152,8 +156,8 @@ class _PackageMenuCardState extends State<PackageMenuCard>
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, top: 10),
+                    padding: const EdgeInsets.only(
+                        left: 10, right: 10, top: 10, bottom: 10),
                     child: Container(
                       height: 33,
                       width: 95,

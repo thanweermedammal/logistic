@@ -7,17 +7,26 @@ import 'package:logistics/controller/allshipment_controller.dart';
 import 'package:logistics/models/login_model.dart';
 import 'package:http/http.dart' as http;
 
-class PickupDatas extends StatelessWidget {
+class PickupDatas extends StatefulWidget {
   List<Login> loginList = [];
   PickupDatas({Key? key, required this.loginList}) : super(key: key);
+
+  @override
+  State<PickupDatas> createState() => _PickupDatasState();
+}
+
+class _PickupDatasState extends State<PickupDatas> {
   AllShipmentController allShipmentController =
       Get.put(AllShipmentController());
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
         // physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: allShipmentController.allshipmentList!.length,
+        itemCount: null != allShipmentController.allshipmentList
+            ? allShipmentController.allshipmentList!.length
+            : 0,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -68,7 +77,7 @@ class PickupDatas extends StatelessWidget {
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 Text(
-                                  '${allShipmentController.customerDetailslist!.first.shipperId}',
+                                  '${allShipmentController.customerDetailslist?.first.shipperId}',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
@@ -100,7 +109,7 @@ class PickupDatas extends StatelessWidget {
                                   style: TextStyle(color: Colors.grey),
                                 ),
                                 Text(
-                                  '${allShipmentController.customerDetailslist!.first.branchId.toString()}',
+                                  '${allShipmentController.customerDetailslist?.first.branchId.toString()}',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500),
@@ -120,7 +129,7 @@ class PickupDatas extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, left: 15),
                         child: Text(
-                          '${allShipmentController.customerDetailslist!.first.address}\n${allShipmentController.customerDetailslist!.first.city}',
+                          '${allShipmentController.customerDetailslist?.first.address}\n${allShipmentController.customerDetailslist?.first.city}',
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
@@ -134,7 +143,7 @@ class PickupDatas extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 10),
+                                left: 10, right: 10, top: 10, bottom: 10),
                             child: Container(
                               height: 33,
                               width: 95,
@@ -146,7 +155,7 @@ class PickupDatas extends StatelessWidget {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   var response = await http.get(Uri.parse(
-                                      'http://185.188.127.100/WaselleApi/api/PickUp/IgnorePickUpRequest?DriverId=${loginList.first.dId}&BranchId=${loginList.first.bId}&PickupRequestId=${allShipmentController.allshipmentList![index].pickUpRequestId}'));
+                                      'http://185.188.127.100/WaselleApi/api/PickUp/IgnorePickUpRequest?DriverId=${widget.loginList.first.dId}&BranchId=${widget.loginList.first.bId}&PickupRequestId=${allShipmentController.allshipmentList![index].pickUpRequestId}'));
                                   if (response.statusCode == 200) {
                                     print('Ignored');
                                   } else {
@@ -180,7 +189,7 @@ class PickupDatas extends StatelessWidget {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   var response = await http.get(Uri.parse(
-                                      'http://185.188.127.100/WaselleApi/api/PickUp/AcceptPickUpRequest?DriverId=${loginList.first.dId}&BranchId=${loginList.first.bId}&PickupRequestId=${allShipmentController.allshipmentList![index].pickUpRequestId}'));
+                                      'http://185.188.127.100/WaselleApi/api/PickUp/AcceptPickUpRequest?DriverId=${widget.loginList.first.dId}&BranchId=${widget.loginList.first.bId}&PickupRequestId=${allShipmentController.allshipmentList![index].pickUpRequestId}'));
                                   if (response.statusCode == 200) {
                                     Navigator.push(
                                         context,
@@ -198,7 +207,7 @@ class PickupDatas extends StatelessWidget {
                                                 shipid: allShipmentController
                                                     .allshipmentList![index]
                                                     .shipmentId,
-                                                loginList: loginList,
+                                                loginList: widget.loginList,
                                                 index: index)));
                                   } else {
                                     print(response.statusCode);

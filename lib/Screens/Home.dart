@@ -101,6 +101,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     allShipmentController.fetchAllShipmentData(widget.loginList);
+
     loadingMap = true;
     getCurrentLoc();
     searchPlaceController = TextEditingController();
@@ -196,32 +197,32 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.start,
           // ignore: prefer_const_literals_to_create_immutables
           children: [
-            Container(
-              height: 50,
-              width: MediaQuery.of(context).size.width,
-              color: HexColor('17aeb4'),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Icon(
-                        Icons.message,
-                        size: 30,
-                        color: Colors.white,
-                      )),
-                  Text(
-                    "You have new pickup request",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   height: 50,
+            //   width: MediaQuery.of(context).size.width,
+            //   color: HexColor('17aeb4'),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     // ignore: prefer_const_literals_to_create_immutables
+            //     children: [
+            //       Padding(
+            //           padding: const EdgeInsets.symmetric(horizontal: 20),
+            //           child: Icon(
+            //             Icons.message,
+            //             size: 30,
+            //             color: Colors.white,
+            //           )),
+            //       Text(
+            //         "You have new pickup request",
+            //         style: TextStyle(
+            //           color: Colors.white,
+            //           fontSize: 14,
+            //           fontWeight: FontWeight.normal,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),
@@ -385,152 +386,155 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: SizedBox(
-                height: 75,
-                child: TabBar(
-                  controller: _tabController,
-                  indicator: BoxDecoration(
-                    color: Color.fromARGB(255, 179, 233, 181),
-                  ),
-                  indicatorWeight: 5,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  labelColor: Colors.black,
-                  // ignore: prefer_const_literals_to_create_immutables
-                  tabs: [
-                    Tab(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                          Image.asset(
-                            "assets/images/allicon.png",
-                            height: 20,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            "All",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Tab(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                          Image.asset(
-                            "assets/images/pickupiccon.png",
-                            height: 23,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            "Pickup Requests",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 8,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Tab(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/accepted.png",
-                            height: 25,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            "Accepted",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 8,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Tab(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/deliveryicon.png",
-                            height: 25,
-                            color: Colors.black,
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            "Delivery Jobs",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 8,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 1200,
-              // ignore: prefer_const_literals_to_create_immutables
 
-              child: Obx(() {
-                if (allShipmentController.isloading.value) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return TabBarView(
-                    // physics: const NeverScrollableScrollPhysics(),
-                    controller: _tabController,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      PackagesMenu(
-                        loginList: widget.loginList,
-                      ),
-                      PackagesMenu(
-                        loginList: widget.loginList,
-                      ),
-                      PackagesMenu(
-                        loginList: widget.loginList,
-                      ),
-                      PackagesMenu(
-                        loginList: widget.loginList,
-                      ),
-                    ],
-                  );
-                }
-              }),
-            )
+            PackagesMenu(loginList: widget.loginList)
+
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 15),
+            //   child: SizedBox(
+            //     height: 75,
+            //     child: TabBar(
+            //       controller: _tabController,
+            //       indicator: BoxDecoration(
+            //         color: Color.fromARGB(255, 179, 233, 181),
+            //       ),
+            //       indicatorWeight: 5,
+            //       indicatorSize: TabBarIndicatorSize.tab,
+            //       labelColor: Colors.black,
+            //       // ignore: prefer_const_literals_to_create_immutables
+            //       tabs: [
+            //         Tab(
+            //           child: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             // ignore: prefer_const_literals_to_create_immutables
+            //             children: [
+            //               Image.asset(
+            //                 "assets/images/allicon.png",
+            //                 height: 20,
+            //                 color: Colors.black,
+            //               ),
+            //               SizedBox(
+            //                 height: 3,
+            //               ),
+            //               Text(
+            //                 "All",
+            //                 style: TextStyle(
+            //                   color: Colors.black,
+            //                   fontSize: 12,
+            //                   fontWeight: FontWeight.normal,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //         Tab(
+            //           child: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             // ignore: prefer_const_literals_to_create_immutables
+            //             children: [
+            //               Image.asset(
+            //                 "assets/images/pickupiccon.png",
+            //                 height: 23,
+            //                 color: Colors.black,
+            //               ),
+            //               SizedBox(
+            //                 height: 2,
+            //               ),
+            //               Text(
+            //                 "Pickup Requests",
+            //                 style: TextStyle(
+            //                   color: Colors.black,
+            //                   fontSize: 8,
+            //                   fontWeight: FontWeight.normal,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //         Tab(
+            //           child: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               Image.asset(
+            //                 "assets/images/accepted.png",
+            //                 height: 25,
+            //                 color: Colors.black,
+            //               ),
+            //               SizedBox(
+            //                 height: 3,
+            //               ),
+            //               Text(
+            //                 "Accepted",
+            //                 style: TextStyle(
+            //                   color: Colors.black,
+            //                   fontSize: 8,
+            //                   fontWeight: FontWeight.normal,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //         Tab(
+            //           child: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               Image.asset(
+            //                 "assets/images/deliveryicon.png",
+            //                 height: 25,
+            //                 color: Colors.black,
+            //               ),
+            //               SizedBox(
+            //                 height: 3,
+            //               ),
+            //               Text(
+            //                 "Delivery Jobs",
+            //                 style: TextStyle(
+            //                   color: Colors.black,
+            //                   fontSize: 8,
+            //                   fontWeight: FontWeight.normal,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 1200,
+            // ignore: prefer_const_literals_to_create_immutables
+
+            // child: Obx(() {
+            //   if (allShipmentController.isloading.value) {
+            //     return Center(child: CircularProgressIndicator());
+            //   } else {
+            //     return TabBarView(
+            //       // physics: const NeverScrollableScrollPhysics(),
+            //       controller: _tabController,
+            //       // ignore: prefer_const_literals_to_create_immutables
+            //       children: [
+            //         PackagesMenu(
+            //           loginList: widget.loginList,
+            //         ),
+            //         PackagesMenu(
+            //           loginList: widget.loginList,
+            //         ),
+            //         PackagesMenu(
+            //           loginList: widget.loginList,
+            //         ),
+            //         PackagesMenu(
+            //           loginList: widget.loginList,
+            //         ),
+            //       ],
+            //     );
+            //   }
+            // }),
+            // )
           ],
         ),
       ),

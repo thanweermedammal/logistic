@@ -10,6 +10,8 @@ import 'package:logistics/Screens/packages_menu.dart';
 import 'package:logistics/Screens/pickup_acceptscreen.dart';
 import 'package:logistics/Screens/pickup_screen.dart';
 import 'package:logistics/Screens/searchbyid.dart';
+import 'package:logistics/Screens/wallet_screen.dart';
+import 'package:logistics/components/drawer.dart';
 import 'package:logistics/components/home/todaystask.dart';
 
 import 'package:bottom_nav_bar/bottom_nav_bar.dart';
@@ -36,6 +38,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _currentIndex = 0;
   List<Widget>? _widgetOptions;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   AllShipmentController allShipmentController =
       Get.put(AllShipmentController());
 
@@ -47,12 +50,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       SearchById(
         loginList: widget.loginList,
       ),
+      WalletScreen(
+        loginList: widget.loginList,
+      ),
       Text('Notification Page',
           style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
     ];
 
     // TODO: implement initState
     super.initState();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   bool isSwitched = true;
@@ -80,71 +92,73 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10.0),
-            ),
+      key: scaffoldKey,
+      appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10.0),
           ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: () {
+              scaffoldKey.currentState?.openDrawer();
+            },
             child: Icon(
               Icons.menu,
               color: Colors.black,
             ),
           ),
-          // ignore: prefer_const_literals_to_create_immutables
-          actions: <Widget>[
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-                child: Switch(
-                  onChanged: toggleSwitch,
-                  value: isSwitched,
-                  activeColor: HexColor('17aeb4'),
-                  activeTrackColor: Colors.black,
-                  inactiveThumbColor: Colors.grey,
-                  inactiveTrackColor: Colors.grey,
-                )),
-          ],
         ),
-        body: _widgetOptions!.elementAt(_currentIndex),
-        bottomNavigationBar: BottomNavBar(
-          showElevation: true,
-          selectedIndex: _currentIndex,
-          onItemSelected: (index) {
-            setState(() => _currentIndex = index);
-          },
-          items: <BottomNavBarItem>[
-            BottomNavBarItem(
-              title: 'Home',
-              icon: const Icon(Icons.home),
-              activeColor: Colors.white,
-              inactiveColor: Colors.black,
-              activeBackgroundColor: Colors.blue.shade300,
-            ),
-            BottomNavBarItem(
-              title: '',
-              icon: Image.asset(
-                "assets/images/bottom2.png",
-                height: 40,
-                color: Colors.black,
-              ),
-              activeColor: Colors.white,
-              inactiveColor: Colors.black,
-              activeBackgroundColor: Colors.blue.shade300,
-            ),
-            BottomNavBarItem(
-              title: 'Notifications',
-              icon: const Icon(Icons.notifications),
-              inactiveColor: Colors.black,
-              activeColor: Colors.white,
-              activeBackgroundColor: Colors.blue.shade300,
-            ),
-          ],
-        ));
+        // ignore: prefer_const_literals_to_create_immutables
+        actions: <Widget>[
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+              child: Switch(
+                onChanged: toggleSwitch,
+                value: isSwitched,
+                activeColor: HexColor('17aeb4'),
+                activeTrackColor: Colors.black,
+                inactiveThumbColor: Colors.grey,
+                inactiveTrackColor: Colors.grey,
+              )),
+        ],
+      ),
+      drawer: drawer(widget.loginList, context),
+      body: _widgetOptions!.elementAt(_currentIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/images/Home.png')),
+            label: 'Home',
+            // backgroundColor: Colors.red,
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/images/Plus.png')),
+            label: 'Add Shipment',
+            // backgroundColor: Colors.green,
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/images/Wallet.png')),
+            label: 'Wallet',
+            // backgroundColor: Colors.purple,
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/images/Notification.png')),
+            label: 'Notification',
+            // backgroundColor: Colors.pink,
+          ),
+        ],
+        currentIndex: _currentIndex,
+        unselectedItemColor: Colors.black,
+        selectedItemColor: Colors.blue.shade300,
+        onTap: _onItemTapped,
+      ),
+    );
   }
 }

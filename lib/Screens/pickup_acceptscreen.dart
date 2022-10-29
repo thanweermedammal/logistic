@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hex_color/flutter_hex_color.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logistics/Screens/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:logistics/controller/allshipment_controller.dart';
@@ -39,6 +40,7 @@ class _PickAcceptState extends State<PickAccept> {
   List<dynamic> qrimages = [];
   String? imageString;
   String? data = "";
+  bool loading = false;
 
   final now = DateTime.now();
   String _scanBarcode = 'Unknown';
@@ -379,7 +381,11 @@ class _PickAcceptState extends State<PickAccept> {
                               onTap: () async {
                                 images = [];
                                 final XFile? image = await ImagePicker()
-                                    .pickImage(source: ImageSource.gallery);
+                                    .pickImage(
+                                        source: ImageSource.camera,
+                                        imageQuality: 0,
+                                        maxHeight: 200,
+                                        maxWidth: 200);
                                 File imagefile =
                                     File(image!.path); //convert Path to File
                                 print(imagefile);
@@ -484,76 +490,93 @@ class _PickAcceptState extends State<PickAccept> {
                       ),
                       child: ElevatedButton(
                         onPressed: () async {
-                          var response = await http.post(
-                              Uri.parse(
-                                  "http://185.188.127.100/WaselleApi/api/Shipment/SaveProduct"),
-                              headers: {
-                                "Accept": "application/json",
-                                "content-type": "application/json"
-                              },
-                              body: json.encode([
-                                {
-                                  "ShipperId": allShipmentController
-                                      .allshipmentList![widget.index].shipperId,
-                                  "ShipmentId": allShipmentController
-                                      .allshipmentList![widget.index]
-                                      .shipmentId,
-                                  "Barcode": _scanBarcode == "Unknown"
-                                      ? ''
-                                      : _scanBarcode,
-                                  "BranchId": widget.loginList.first.bId,
-                                  "DriverId": widget.loginList.first.dId,
-                                  "ProductName": 'item',
-                                  "ShipperName": allShipmentController
-                                      .allshipmentList![widget.index].name,
-                                  "ShipperMobile":
-                                      widget.loginList.first.mobile,
-                                  "AmountRecieved": allShipmentController
-                                      .allshipmentList![widget.index]
-                                      .amountRecieved,
-                                  "ImageString": imageString,
-                                  "Status": 'Picked',
-                                  "FromAddress": allShipmentController
-                                      .allshipmentList![widget.index].address,
-                                  "ToAddress": '',
-                                  "LoggedUser": allShipmentController
-                                      .allshipmentList![widget.index]
-                                      .shipperName,
-                                  "Date": '${now.year}-${now.month}-${now.day}',
-                                }
-                              ]));
-                          if (response.statusCode == 200) {
-                            print(response.statusCode);
-                            print(response.body);
-                            final snackBar = SnackBar(
-                                content: Text(
-                                    'Successfully Booked ${response.body}'));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            if (response.body != 0) {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      HomeScreen(widget.loginList),
-                                ),
-                                ModalRoute.withName('/'),
-                              );
+                          if (_scanBarcode.isNotEmpty) {
+                            setState(() {
+                              loading = true;
+                            });
+                            var response = await http.post(
+                                Uri.parse(
+                                    "http://185.188.127.100/WaselleApi/api/Shipment/SaveProduct"),
+                                headers: {
+                                  "Accept": "application/json",
+                                  "content-type": "application/json"
+                                },
+                                body: json.encode([
+                                  {
+                                    "ShipperId": allShipmentController
+                                        .allshipmentList![widget.index]
+                                        .shipperId,
+                                    "ShipmentId": allShipmentController
+                                        .allshipmentList![widget.index]
+                                        .shipmentId,
+                                    "Barcode": _scanBarcode == "Unknown"
+                                        ? ''
+                                        : _scanBarcode,
+                                    "BranchId": widget.loginList.first.bId,
+                                    "DriverId": widget.loginList.first.dId,
+                                    "ProductName": 'item',
+                                    "ShipperName": allShipmentController
+                                        .allshipmentList![widget.index].name,
+                                    "ShipperMobile":
+                                        widget.loginList.first.mobile,
+                                    "AmountRecieved": allShipmentController
+                                        .allshipmentList![widget.index]
+                                        .amountRecieved,
+                                    "ImageString": imageString,
+                                    "Status": 'Picked',
+                                    "FromAddress": allShipmentController
+                                        .allshipmentList![widget.index].address,
+                                    "ToAddress": '',
+                                    "LoggedUser": allShipmentController
+                                        .allshipmentList![widget.index]
+                                        .shipperName,
+                                    "Date":
+                                        '${now.year}-${now.month}-${now.day}',
+                                  }
+                                ]));
+                            if (response.statusCode == 200) {
+                              print(response.statusCode);
+                              print(response.body);
+                              final snackBar = SnackBar(
+                                  content: Text(
+                                      'Successfully Booked ${response.body}'));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                              if (response.body != 0) {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomeScreen(widget.loginList),
+                                  ),
+                                  ModalRoute.withName('/'),
+                                );
+                              }
+                            } else {
+                              print(response.statusCode);
+                              setState(() {
+                                loading = false;
+                              });
                             }
                           } else {
-                            print(response.statusCode);
+                            print('fill');
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           primary: HexColor('17aeb4'),
                         ),
-                        child: Text(
-                          "Submit to Approve",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xffffffff),
-                          ),
-                        ),
+                        child: loading == false
+                            ? Text(
+                                "Submit to Approve",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xffffffff),
+                                ),
+                              )
+                            : LoadingIndicator(
+                                indicatorType: Indicator.ballSpinFadeLoader,
+                                colors: [Colors.white],
+                              ),
                       ),
                     ),
                   ),

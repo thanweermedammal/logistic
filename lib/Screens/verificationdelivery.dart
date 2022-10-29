@@ -13,10 +13,12 @@ class VerificationDelivery extends StatefulWidget {
   List<DeliveryDetails> deliveryDetailsList = [];
   int index;
   List<Login> loginList = [];
+  final runsheet;
   VerificationDelivery(
       {Key? key,
       required this.deliveryDetailsList,
       required this.index,
+        required this.runsheet,
       required this.loginList})
       : super(key: key);
 
@@ -250,13 +252,85 @@ class _VerificationDeliveryState extends State<VerificationDelivery> {
                                             ],
                                           ),
                                         ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(8.0),
+                                        //   child: Row(
+                                        //     children: [
+                                        //       Expanded(
+                                        //         child: Text(
+                                        //           'price',
+                                        //           style: TextStyle(
+                                        //               fontSize: 15,
+                                        //               color: Colors.grey),
+                                        //         ),
+                                        //       ),
+                                        //       Expanded(
+                                        //         // flex: 2,
+                                        //         child: Container(
+                                        //           height: 42,
+                                        //           width: 67,
+                                        //           decoration: BoxDecoration(
+                                        //               color:
+                                        //                   HexColor('17B5BC')),
+                                        //           child: Center(
+                                        //             child: Text(
+                                        //               widget
+                                        //                   .deliveryDetailsList[
+                                        //                       widget.index]
+                                        //                   .codAmount
+                                        //                   .toString(),
+                                        //               style: TextStyle(
+                                        //                   color: Colors.white),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       )
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(8.0),
+                                        //   child: Row(
+                                        //     children: [
+                                        //       Expanded(
+                                        //         child: Text(
+                                        //           'Delivery Charge',
+                                        //           style: TextStyle(
+                                        //               fontSize: 15,
+                                        //               color: Colors.grey),
+                                        //         ),
+                                        //       ),
+                                        //       Expanded(
+                                        //         // flex: 2,
+                                        //         child: Container(
+                                        //           height: 42,
+                                        //           width: 67,
+                                        //           decoration: BoxDecoration(
+                                        //               color:
+                                        //                   HexColor('17B5BC')),
+                                        //           child: Center(
+                                        //             child: Text(
+                                        //               widget
+                                        //                   .deliveryDetailsList[
+                                        //                       widget.index]
+                                        //                   .shippingCharge
+                                        //                   .toString(),
+                                        //               style: TextStyle(
+                                        //                   color: Colors.white),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       )
+                                        //     ],
+                                        //   ),
+                                        // ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  'price',
+                                                  'Total Amount',
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       color: Colors.grey),
@@ -272,47 +346,7 @@ class _VerificationDeliveryState extends State<VerificationDelivery> {
                                                           HexColor('17B5BC')),
                                                   child: Center(
                                                     child: Text(
-                                                      widget
-                                                          .deliveryDetailsList[
-                                                              widget.index]
-                                                          .codAmount
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  'Delivery Charge',
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.grey),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                // flex: 2,
-                                                child: Container(
-                                                  height: 42,
-                                                  width: 67,
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          HexColor('17B5BC')),
-                                                  child: Center(
-                                                    child: Text(
-                                                      widget
-                                                          .deliveryDetailsList[
-                                                              widget.index]
-                                                          .shippingCharge
-                                                          .toString(),
+                                                      "${widget.deliveryDetailsList[widget.index].codAmount}",
                                                       style: TextStyle(
                                                           color: Colors.white),
                                                     ),
@@ -455,67 +489,67 @@ class _VerificationDeliveryState extends State<VerificationDelivery> {
                                         ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              'Delivery Charge Received',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.grey),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: TextFormField(
-                                                // validator: phoneValidator,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                cursorColor: Colors.green,
-                                                controller:
-                                                    deliveryReceivedController,
-                                                onChanged: (text) {
-                                                  // mobileNumber = value;
-                                                },
-                                                decoration: InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.all(10),
-                                                  focusColor:
-                                                      Colors.greenAccent,
-                                                  // labelStyle: ktext14,
-
-                                                  labelStyle: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12,
-                                                  ),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          5.0)),
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Colors.black,
-                                                          )),
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                10.0)),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.all(8.0),
+                                    //   child: Row(
+                                    //     children: [
+                                    //       Expanded(
+                                    //         child: Text(
+                                    //           'Delivery Charge Received',
+                                    //           style: TextStyle(
+                                    //               fontSize: 15,
+                                    //               color: Colors.grey),
+                                    //         ),
+                                    //       ),
+                                    //       Expanded(
+                                    //         child: Padding(
+                                    //           padding:
+                                    //               const EdgeInsets.all(5.0),
+                                    //           child: TextFormField(
+                                    //             // validator: phoneValidator,
+                                    //             keyboardType:
+                                    //                 TextInputType.text,
+                                    //             cursorColor: Colors.green,
+                                    //             controller:
+                                    //                 deliveryReceivedController,
+                                    //             onChanged: (text) {
+                                    //               // mobileNumber = value;
+                                    //             },
+                                    //             decoration: InputDecoration(
+                                    //               contentPadding:
+                                    //                   EdgeInsets.all(10),
+                                    //               focusColor:
+                                    //                   Colors.greenAccent,
+                                    //               // labelStyle: ktext14,
+                                    //
+                                    //               labelStyle: TextStyle(
+                                    //                 color: Colors.grey,
+                                    //                 fontSize: 12,
+                                    //               ),
+                                    //               focusedBorder:
+                                    //                   OutlineInputBorder(
+                                    //                       borderRadius:
+                                    //                           BorderRadius.all(
+                                    //                               Radius
+                                    //                                   .circular(
+                                    //                                       5.0)),
+                                    //                       borderSide:
+                                    //                           BorderSide(
+                                    //                         color: Colors.black,
+                                    //                       )),
+                                    //               border: OutlineInputBorder(
+                                    //                 borderRadius:
+                                    //                     BorderRadius.all(
+                                    //                         Radius.circular(
+                                    //                             10.0)),
+                                    //               ),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
                                     SizedBox(
                                       height: 30,
                                     ),
@@ -536,7 +570,7 @@ class _VerificationDeliveryState extends State<VerificationDelivery> {
                                           onTap: () async {
                                             var response = await http.post(
                                                 Uri.parse(
-                                                    'http://185.188.127.100/WaselleApi/api/Shipment/DeliveredByDriver?BranchId=${widget.loginList.first.bId}&ShipmentId=${widget.deliveryDetailsList[widget.index].shipmentId}&Barcode=${widget.deliveryDetailsList[widget.index].barcode}&CODAmount=${amountReceivedController.text}&CollectedShippingCharge=${deliveryReceivedController.text}'));
+                                                    'http://185.188.127.100/WaselleApi/api/Shipment/DeliveredByDriver?BranchId=${widget.loginList.first.bId}&ShipmentId=${widget.deliveryDetailsList[widget.index].shipmentId}&Barcode=${widget.deliveryDetailsList[widget.index].barcode}&CODAmount=${amountReceivedController.text}&CollectedShippingCharge=${widget.deliveryDetailsList[widget.index].shippingCharge}'));
                                             if (response.statusCode == 200) {
                                               print('Sucess');
                                               print(response.body);
@@ -549,6 +583,7 @@ class _VerificationDeliveryState extends State<VerificationDelivery> {
                                                 if (widget.deliveryDetailsList
                                                         .length ==
                                                     widget.index + 1) {
+                                                  // CircularProgressIndicator();
                                                   Navigator.pushReplacement(
                                                       context,
                                                       MaterialPageRoute(
@@ -561,11 +596,9 @@ class _VerificationDeliveryState extends State<VerificationDelivery> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               DeliveryDatasScreen(
-                                                                  deliveryDetailsList:
-                                                                      widget
-                                                                          .deliveryDetailsList,
+
                                                                   loginList: widget
-                                                                      .loginList)));
+                                                                      .loginList, runsheet: widget.runsheet,)));
                                                 }
                                               }
                                             } else {

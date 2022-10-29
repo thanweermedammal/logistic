@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_hex_color/flutter_hex_color.dart';
 import 'package:get/get.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logistics/Screens/add_consignment.dart';
 import 'package:logistics/components/delivery_card.dart';
 import 'package:logistics/controller/allshipment_controller.dart';
@@ -19,10 +20,11 @@ class SearchById extends StatefulWidget {
 }
 
 class _SearchByIdState extends State<SearchById> {
+  bool loading = false;
   AllShipmentController allShipmentController =
       Get.put(AllShipmentController());
   List<CustomerDetails> customerDetailList = [];
-  TextEditingController shipmentIdController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class _SearchByIdState extends State<SearchById> {
                       // validator: phoneValidator,
                       keyboardType: TextInputType.text,
                       cursorColor: Colors.green,
-                      controller: shipmentIdController,
+                      controller: mobileController,
                       onChanged: (text) {
                         // mobileNumber = value;
                       },
@@ -63,7 +65,7 @@ class _SearchByIdState extends State<SearchById> {
                         contentPadding: EdgeInsets.all(10),
                         focusColor: Colors.greenAccent,
                         // labelStyle: ktext14,
-                        labelText: "Shipper ID",
+                        labelText: "Shipper Id / Mobile Number",
                         labelStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 12,
@@ -92,32 +94,65 @@ class _SearchByIdState extends State<SearchById> {
                       ),
                       child: ElevatedButton(
                         onPressed: () async {
-                          var response = await http.get(Uri.parse(
-                              'http://185.188.127.100/WaselleApi/api/Shipper/GetAllShipperSearchById?ShipperId=${shipmentIdController.text}&BranchId=${widget.loginList.first.bId}'));
-                          final customerData = jsonDecode(response.body);
-                          if (response.statusCode == 200) {
-                            print('ok');
+                          setState(() {
+                            loading = true;
+                          });
+                          if (mobileController.text.length > 6) {
+                            var response = await http.get(Uri.parse(
+                                'http://185.188.127.100/WaselleApi/api/Shipper/GetShipperDetailsBySearch?BranchId=${widget.loginList.first.bId}&Mobile=${mobileController.text}'));
+                            final customerData = jsonDecode(response.body);
+                            if (response.statusCode == 200) {
+                              print('ok');
 
-                            setState(() {
-                              customerDetailList = List<CustomerDetails>.from(
-                                  customerData
-                                      .map((x) => CustomerDetails.fromJson(x)));
-                            });
+                              setState(() {
+                                loading = false;
+                                customerDetailList = List<CustomerDetails>.from(
+                                    customerData.map(
+                                        (x) => CustomerDetails.fromJson(x)));
+                              });
+                            } else {
+                              print('errrr');
+                              setState(() {
+                                loading = false;
+                              });
+                            }
                           } else {
-                            print('errrr');
+                            var response = await http.get(Uri.parse(
+                                'http://185.188.127.100/WaselleApi/api/Shipper/GetAllShipperSearchById?ShipperId=${mobileController.text}&BranchId=${widget.loginList.first.bId}'));
+                            final customerData = jsonDecode(response.body);
+                            if (response.statusCode == 200) {
+                              print('ok');
+
+                              setState(() {
+                                loading = false;
+                                customerDetailList = List<CustomerDetails>.from(
+                                    customerData.map(
+                                        (x) => CustomerDetails.fromJson(x)));
+                              });
+                            } else {
+                              print('errrr');
+                              setState(() {
+                                loading = false;
+                              });
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           primary: HexColor('17aeb4'),
                         ),
-                        child: Text(
-                          "Search",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xffffffff),
-                          ),
-                        ),
+                        child: loading == false
+                            ? Text(
+                                "Search",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
+                              )
+                            : LoadingIndicator(
+                                indicatorType: Indicator.ballSpinFadeLoader,
+                                colors: [Colors.white],
+                              ),
                       ),
                     ),
                   ),

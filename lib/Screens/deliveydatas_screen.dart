@@ -1,15 +1,47 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hex_color/flutter_hex_color.dart';
 import 'package:logistics/Screens/deliveredpersondetail_screen.dart';
+import 'package:logistics/Screens/home_screen.dart';
 import 'package:logistics/models/deliverydetail_model.dart';
 import 'package:logistics/models/login_model.dart';
+import 'package:http/http.dart' as http;
 
-class DeliveryDatasScreen extends StatelessWidget {
-  List<DeliveryDetails> deliveryDetailsList = [];
+class DeliveryDatasScreen extends StatefulWidget {
+  // List<DeliveryDetails> deliveryDetailsList = [];
   List<Login> loginList = [];
+  final runsheet;
   DeliveryDatasScreen(
-      {Key? key, required this.deliveryDetailsList, required this.loginList})
+      {Key? key, required this.loginList, required this.runsheet})
       : super(key: key);
+
+  @override
+  State<DeliveryDatasScreen> createState() => _DeliveryDatasScreenState();
+}
+
+class _DeliveryDatasScreenState extends State<DeliveryDatasScreen> {
+  List<DeliveryDetails> deliveryDetailsList = [];
+  GetData() async {
+    var response = await http.get(Uri.parse(
+        'http://185.188.127.100/WaselleApi/api/Shipment/GetRunsheetDetails?DriverId=${widget.loginList.first.dId}&BranchId=${widget.loginList.first.bId}&RunsheetId=${widget.runsheet}'));
+    final deliveryData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      print('ok');
+
+      setState(() {
+        deliveryDetailsList = List<DeliveryDetails>.from(
+            deliveryData.map((x) => DeliveryDetails.fromJson(x)));
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    GetData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +62,12 @@ class DeliveryDatasScreen extends StatelessWidget {
                         // color: Colors.greenAccent,
                         borderRadius: BorderRadius.circular(10.0)),
                     child: InkWell(
-                      onTap: (() => Navigator.pop(context)),
+                      onTap: (() => Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomeScreen(widget.loginList)),
+                          (route) => false)),
                       child: Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Icon(
@@ -219,7 +256,8 @@ class DeliveryDatasScreen extends StatelessWidget {
                                                 deliveryDetailsList:
                                                     deliveryDetailsList,
                                                 index: index,
-                                                loginList: loginList,
+                                                loginList: widget.loginList,
+                                                runsheet: widget.runsheet,
                                               )));
                                 },
                                 style: ElevatedButton.styleFrom(
