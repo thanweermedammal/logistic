@@ -14,6 +14,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logistics/controller/allshipment_controller.dart';
 import 'package:logistics/models/customerdetails.dart';
 import 'package:logistics/models/login_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AddConsignment extends StatefulWidget {
   List<Login> loginList = [];
@@ -38,6 +39,7 @@ class _AddConsignmentState extends State<AddConsignment> {
   String? imageString;
   String? data = "";
   final now = DateTime.now();
+  bool partialcheck = false;
   bool loading = false;
   String _scanBarcode = 'Unknown';
   AllShipmentController allShipmentController =
@@ -140,147 +142,6 @@ class _AddConsignmentState extends State<AddConsignment> {
             mainAxisAlignment: MainAxisAlignment.start,
             // ignore: prefer_const_literals_to_create_immutables
             children: [
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  Text(
-                    "From Address",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(5),
-                  //     color: Colors.white,
-                  //     border: Border.all(
-                  //       color: Colors.green,
-                  //       width: 2,
-                  //     ),
-                  //   ),
-                  //   child: Center(
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(5.0),
-                  //       child: Text(
-                  //         "Change",
-                  //         style: TextStyle(
-                  //           fontSize: 15,
-                  //           fontWeight: FontWeight.w400,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                '${widget.customerDetailList[widget.index].name}',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "${widget.customerDetailList[widget.index].address}",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "${widget.customerDetailList[widget.index].city} ",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  Text(
-                    "Pin: ${widget.customerDetailList[widget.index].zipCode}",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Mob: ${widget.loginList.first.mobile}",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   // ignore: prefer_const_literals_to_create_immutables
-              //   children: [
-              //     Expanded(
-              //       child: Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Divider(
-              //           thickness: 2,
-              //           color: Colors.black,
-              //         ),
-              //       ),
-              //     ),
-              //     Text(
-              //       "Destination",
-              //       style: TextStyle(
-              //         color: Colors.black,
-              //         fontSize: 20,
-              //         fontWeight: FontWeight.normal,
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Divider(
-              //           thickness: 2,
-              //           color: Colors.black,
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Order Details",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text("Total Orders  : ${details.length}")
-                ],
-              ),
               SizedBox(
                 height: 10,
               ),
@@ -407,38 +268,36 @@ class _AddConsignmentState extends State<AddConsignment> {
                           ],
                         ),
                       )),
+
               SizedBox(
-                height: 20,
+                height: 10,
               ),
+              Text(
+                "Reciever Info",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey),
+              ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    height: 40,
-                    width: 140,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: HexColor('17aeb4'),
-                      ),
-                      child: Text(
-                        'Add',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Color(0xffffffff),
-                        ),
-                      ),
-                    ),
-                  ),
+                  Text(
+                    "Total Orders  : ${details.length}",
+                    style: TextStyle(color: Colors.grey),
+                  )
                 ],
               ),
               SizedBox(
                 height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  "First Name",
+                  style: TextStyle(color: Colors.grey),
+                ),
               ),
               Row(
                 children: [
@@ -447,6 +306,7 @@ class _AddConsignmentState extends State<AddConsignment> {
                       padding: const EdgeInsets.all(5.0),
                       child: TextFormField(
                         // validator: phoneValidator,
+
                         keyboardType: TextInputType.text,
                         cursorColor: Colors.green,
                         controller: firstNameController,
@@ -457,41 +317,7 @@ class _AddConsignmentState extends State<AddConsignment> {
                           contentPadding: EdgeInsets.all(10),
                           focusColor: Colors.greenAccent,
                           // labelStyle: ktext14,
-                          labelText: "First Name",
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                              )),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        // validator: phoneValidator,
-                        keyboardType: TextInputType.text,
-                        cursorColor: Colors.green,
-                        controller: lastNameController,
-                        onChanged: (text) {
-                          // mobileNumber = value;
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(10),
-                          focusColor: Colors.greenAccent,
-                          // labelStyle: ktext14,
-                          labelText: "Last Name",
+                          // labelText: "First Name",
                           labelStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 12,
@@ -514,32 +340,9 @@ class _AddConsignmentState extends State<AddConsignment> {
               ),
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: TextFormField(
-                  // validator: phoneValidator,
-                  keyboardType: TextInputType.text,
-                  cursorColor: Colors.green,
-                  controller: address1Controller,
-                  onChanged: (text) {
-                    // mobileNumber = value;
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    focusColor: Colors.greenAccent,
-                    // labelStyle: ktext14,
-                    labelText: "Address Line1",
-                    labelStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                        )),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                  ),
+                child: Text(
+                  "Last Name",
+                  style: TextStyle(color: Colors.grey),
                 ),
               ),
               Row(
@@ -551,7 +354,7 @@ class _AddConsignmentState extends State<AddConsignment> {
                         // validator: phoneValidator,
                         keyboardType: TextInputType.text,
                         cursorColor: Colors.green,
-                        controller: address2Controller,
+                        controller: lastNameController,
                         onChanged: (text) {
                           // mobileNumber = value;
                         },
@@ -559,42 +362,7 @@ class _AddConsignmentState extends State<AddConsignment> {
                           contentPadding: EdgeInsets.all(10),
                           focusColor: Colors.greenAccent,
                           // labelStyle: ktext14,
-                          labelText: "Address Line2",
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                              )),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 150,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        // validator: phoneValidator,
-                        keyboardType: TextInputType.text,
-                        cursorColor: Colors.green,
-                        controller: cityController,
-                        onChanged: (text) {
-                          // mobileNumber = value;
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(10),
-                          focusColor: Colors.greenAccent,
-                          // labelStyle: ktext14,
-                          labelText: "City",
+                          // labelText: "Last Name",
                           labelStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 12,
@@ -615,41 +383,168 @@ class _AddConsignmentState extends State<AddConsignment> {
                   ),
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  "Address",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: TextFormField(
+                  // validator: phoneValidator,
+                  keyboardType: TextInputType.text,
+                  cursorColor: Colors.green,
+                  controller: address1Controller,
+                  onChanged: (text) {
+                    // mobileNumber = value;
+                  },
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(10),
+                    focusColor: Colors.greenAccent,
+                    // labelStyle: ktext14,
+                    // labelText: "Address Line1",
+                    labelStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                        )),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  ),
+                ),
+              ),
+
               Row(
                 children: [
-                  SizedBox(
-                    width: 150,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: TextFormField(
-                        // validator: phoneValidator,
-                        keyboardType: TextInputType.text,
-                        cursorColor: Colors.green,
-                        controller: zipCodeController,
-                        onChanged: (text) {
-                          // mobileNumber = value;
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(10),
-                          focusColor: Colors.greenAccent,
-                          // labelStyle: ktext14,
-                          labelText: "Zip Code",
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                              )),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            "ZipCode",
+                            style: TextStyle(color: Colors.grey),
                           ),
                         ),
-                      ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: TextFormField(
+                                  // validator: phoneValidator,
+                                  keyboardType: TextInputType.text,
+                                  cursorColor: Colors.green,
+                                  controller: zipCodeController,
+                                  onChanged: (text) {
+                                    // mobileNumber = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(10),
+                                    focusColor: Colors.greenAccent,
+                                    // labelStyle: ktext14,
+                                    // labelText: "Zip Code",
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                        )),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            "City",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: TextFormField(
+                                  // validator: phoneValidator,
+                                  keyboardType: TextInputType.text,
+                                  cursorColor: Colors.green,
+                                  controller: cityController,
+                                  onChanged: (text) {
+                                    // mobileNumber = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(10),
+                                    focusColor: Colors.greenAccent,
+                                    // labelStyle: ktext14,
+                                    // labelText: "City",
+                                    labelStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                        )),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  "Contact Number",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    height: 40,
+                    width: 40,
+                    color: HexColor('17aeb4'),
+                    child: Icon(
+                      Icons.phone_enabled_outlined,
+                      color: Colors.white,
                     ),
                   ),
                   Expanded(
@@ -667,7 +562,7 @@ class _AddConsignmentState extends State<AddConsignment> {
                           contentPadding: EdgeInsets.all(10),
                           focusColor: Colors.greenAccent,
                           // labelStyle: ktext14,
-                          labelText: "Contact Details (mandatory)",
+                          // labelText: "Contact Details (mandatory)",
                           labelStyle: TextStyle(
                             color: Colors.grey,
                             fontSize: 12,
@@ -688,21 +583,22 @@ class _AddConsignmentState extends State<AddConsignment> {
                   ),
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  "Alternative Number",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
               Row(
                 children: [
-                  SizedBox(
-                    width: 200,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Center(
-                        child: Text(
-                          "Contact details (optional)",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    color: HexColor('17aeb4'),
+                    child: Icon(
+                      Icons.phone_enabled_outlined,
+                      color: Colors.white,
                     ),
                   ),
                   Expanded(
@@ -737,6 +633,145 @@ class _AddConsignmentState extends State<AddConsignment> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "COD",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Checkbox(
+                                  value: yescheck,
+                                  onChanged: (bool? newvalue) {
+                                    setState(() {
+                                      yescheck = true;
+                                      if (yescheck == true) {
+                                        nocheck = false;
+                                        partialcheck = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Paid",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Checkbox(
+                                  value: nocheck,
+                                  onChanged: (bool? newvalue) {
+                                    setState(() {
+                                      nocheck = true;
+                                      if (nocheck == true) {
+                                        yescheck = false;
+                                        partialcheck = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Partial",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Checkbox(
+                                  value: partialcheck,
+                                  onChanged: (bool? newvalue) {
+                                    setState(() {
+                                      partialcheck = true;
+                                      if (partialcheck == true) {
+                                        yescheck = false;
+                                        nocheck = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+              if (yescheck == true)
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Center(
+                          child: Text(
+                            "Amount ( OMR )",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextFormField(
+                          // validator: phoneValidator,
+                          keyboardType: TextInputType.number,
+                          cursorColor: Colors.green,
+                          controller: amountController,
+                          onChanged: (text) {
+                            // mobileNumber = value;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(10),
+                            focusColor: Colors.greenAccent,
+                            // labelStyle: ktext14,
+
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                )),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -794,7 +829,7 @@ class _AddConsignmentState extends State<AddConsignment> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -811,12 +846,12 @@ class _AddConsignmentState extends State<AddConsignment> {
                           GestureDetector(
                             onTap: () async {
                               images = [];
-                              final XFile? image = await ImagePicker()
-                                  .pickImage(
+                              final XFile? image =
+                                  await ImagePicker().pickImage(
                                       source: ImageSource.camera,
-                                      imageQuality: 0,
-                                      maxHeight: 200,
-                                      maxWidth: 200);
+                                      // imageQuality: 0,
+                                      maxHeight: 500,
+                                      maxWidth: 400);
                               File imagefile =
                                   File(image!.path); //convert Path to File
                               print(imagefile);
@@ -867,7 +902,7 @@ class _AddConsignmentState extends State<AddConsignment> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
-                              color: Colors.black,
+                              color: Colors.grey,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -880,128 +915,7 @@ class _AddConsignmentState extends State<AddConsignment> {
               SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 200,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Center(
-                        child: Text(
-                          "Is this Consignment COD?",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Checkbox(
-                                  value: yescheck,
-                                  onChanged: (bool? newvalue) {
-                                    setState(() {
-                                      yescheck = true;
-                                      if (yescheck == true) {
-                                        nocheck = false;
-                                      }
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  "Yes",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: nocheck,
-                                  onChanged: (bool? newvalue) {
-                                    setState(() {
-                                      nocheck = true;
-                                      if (nocheck == true) {
-                                        yescheck = false;
-                                      }
-                                    });
-                                  },
-                                ),
-                                Text(
-                                  "No",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )),
-                  ),
-                ],
-              ),
-              if (yescheck == true)
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 200,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Center(
-                          child: Text(
-                            "COD Amount",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: TextFormField(
-                          // validator: phoneValidator,
-                          keyboardType: TextInputType.number,
-                          cursorColor: Colors.green,
-                          controller: amountController,
-                          onChanged: (text) {
-                            // mobileNumber = value;
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10),
-                            focusColor: Colors.greenAccent,
-                            // labelStyle: ktext14,
 
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                )),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               SizedBox(
                 height: 10,
               ),
@@ -1018,50 +932,76 @@ class _AddConsignmentState extends State<AddConsignment> {
                     ),
                     child: ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          details.add({
-                            "ShipperId": widget
-                                .customerDetailList[widget.index].shipperId,
-                            "ItemDescription": "item",
-                            "Barcode": _scanBarcode == "Unknown"
-                                ? ''
-                                : "${_scanBarcode}",
-                            "BranchId": widget.loginList.first.bId,
-                            "DriverId": widget.loginList.first.dId,
-                            "ProductName": "item",
-                            "ShipperName":
-                                "${widget.customerDetailList[widget.index].name}",
-                            "ShipperMobile":
-                                "${widget.customerDetailList[widget.index].mobile}",
-                            "AmountRecieved": amountController.text,
-                            "ImageString": "${imageString}",
-                            "Status": 'Picked',
-                            "RecieverName": "${firstNameController.text}",
-                            "RecieverLastName": "${lastNameController.text}",
-                            "RecieverAddress1": "${address1Controller.text}",
-                            "RecieverAddress2": "${address2Controller.text}",
-                            "RecieverCity": "${cityController.text}",
-                            "RecieveZip": "${zipCodeController.text}",
-                            "RecieverCondactDeatils":
-                                "${contactController.text}",
-                            "CODAmount":
-                                yescheck != true ? 0 : amountController.text,
-                            "IsCOD": yescheck.toString(),
-                            "IsDelete": false.toString(),
-                            "LoggedUser": widget.loginList.first.name,
-                            "Date": '22',
-                          });
-                        });
-                        firstNameController.clear();
-                        lastNameController.clear();
-                        address1Controller.clear();
-                        address2Controller.clear();
-                        cityController.clear();
-                        zipCodeController.clear();
-                        contactController.clear();
-                        _scanBarcode = 'Unknown';
-                        images = [];
-                        amountController.clear();
+                        if (_scanBarcode != 'Unknown') {
+                          if (images.isNotEmpty) {
+                            setState(() {
+                              details.add({
+                                "ShipperId": widget
+                                    .customerDetailList[widget.index].shipperId,
+                                "ItemDescription": "item",
+                                "Barcode": _scanBarcode == "Unknown"
+                                    ? ''
+                                    : "${_scanBarcode}",
+                                "BranchId": widget.loginList.first.bId,
+                                "DriverId": widget.loginList.first.dId,
+                                "ProductName": "item",
+                                "ShipperName":
+                                    "${widget.customerDetailList[widget.index].name}",
+                                "ShipperMobile":
+                                    "${widget.customerDetailList[widget.index].mobile}",
+                                "AmountRecieved": amountController.text,
+                                "ImageString": "${imageString}",
+                                "Status": 'Picked',
+                                "RecieverName": "${firstNameController.text}",
+                                "RecieverLastName":
+                                    "${lastNameController.text}",
+                                "RecieverAddress1":
+                                    "${address1Controller.text}",
+                                "RecieverAddress2":
+                                    "${address2Controller.text}",
+                                "RecieverCity": "${cityController.text}",
+                                "RecieveZip": "${zipCodeController.text}",
+                                "RecieverCondactDeatils":
+                                    "${contactController.text}",
+                                "CODAmount": yescheck != true
+                                    ? 0
+                                    : amountController.text,
+                                "IsCOD": yescheck.toString(),
+                                "IsDelete": false.toString(),
+                                "LoggedUser": widget.loginList.first.name,
+                                "Date": '22',
+                              });
+                            });
+                            firstNameController.clear();
+                            lastNameController.clear();
+                            address1Controller.clear();
+                            address2Controller.clear();
+                            cityController.clear();
+                            zipCodeController.clear();
+                            contactController.clear();
+                            _scanBarcode = 'Unknown';
+                            images = [];
+                            amountController.clear();
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Please select image",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please Scan Barcode",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         primary: HexColor('17aeb4'),

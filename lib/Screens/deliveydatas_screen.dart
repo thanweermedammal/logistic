@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hex_color/flutter_hex_color.dart';
 import 'package:logistics/Screens/deliveredpersondetail_screen.dart';
 import 'package:logistics/Screens/home_screen.dart';
+import 'package:logistics/controller/sharedvaluehelper.dart';
 import 'package:logistics/models/deliverydetail_model.dart';
 import 'package:logistics/models/login_model.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class _DeliveryDatasScreenState extends State<DeliveryDatasScreen> {
   List<DeliveryDetails> deliveryDetailsList = [];
   GetData() async {
     var response = await http.get(Uri.parse(
-        'http://185.188.127.100/WaselleApi/api/Shipment/GetRunsheetDetails?DriverId=${widget.loginList.first.dId}&BranchId=${widget.loginList.first.bId}&RunsheetId=${widget.runsheet}'));
+        'http://185.188.127.100/WaselleApi/api/Shipment/GetVerifiedRunsheetDetails?DriverId=${widget.loginList.first.dId}&BranchId=${widget.loginList.first.bId}&RunsheetId=${widget.runsheet}'));
     final deliveryData = jsonDecode(response.body);
     if (response.statusCode == 200) {
       print('ok');
@@ -32,14 +33,32 @@ class _DeliveryDatasScreenState extends State<DeliveryDatasScreen> {
       setState(() {
         deliveryDetailsList = List<DeliveryDetails>.from(
             deliveryData.map((x) => DeliveryDetails.fromJson(x)));
+        vi();
       });
+      assigned.$ = deliveryDetailsList.length;
     }
   }
 
+  vi() {
+    for (var i = 0; i < deliveryDetailsList.length; i++) {
+      print(deliveryDetailsList[i].status);
+      if (deliveryDetailsList[i].status == "Delivery Confirmed by Driver") {
+        confirmed.add(deliveryDetailsList[i]);
+      } else {
+        completed.add(deliveryDetailsList[i]);
+      }
+    }
+    ;
+  }
+
+  List<DeliveryDetails> confirmed = [];
+  List<DeliveryDetails> completed = [];
   @override
   void initState() {
     // TODO: implement initState
     GetData();
+    vi();
+
     super.initState();
   }
 

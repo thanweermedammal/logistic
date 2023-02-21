@@ -69,6 +69,11 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
           );
+        } else {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+              (route) => false);
         }
       }
     } else {

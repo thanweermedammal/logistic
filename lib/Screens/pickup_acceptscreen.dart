@@ -380,12 +380,12 @@ class _PickAcceptState extends State<PickAccept> {
                             GestureDetector(
                               onTap: () async {
                                 images = [];
-                                final XFile? image = await ImagePicker()
-                                    .pickImage(
+                                final XFile? image =
+                                    await ImagePicker().pickImage(
                                         source: ImageSource.camera,
-                                        imageQuality: 0,
-                                        maxHeight: 200,
-                                        maxWidth: 200);
+                                        // imageQuality: 0,
+                                        maxHeight: 500,
+                                        maxWidth: 400);
                                 File imagefile =
                                     File(image!.path); //convert Path to File
                                 print(imagefile);

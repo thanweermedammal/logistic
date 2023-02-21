@@ -2,9 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hex_color/flutter_hex_color.dart';
+import 'package:get/get.dart';
+import 'package:logistics/controller/allshipment_controller.dart';
+import 'package:logistics/controller/sharedvaluehelper.dart';
 
-class TodaysTask extends StatelessWidget {
-  const TodaysTask({Key? key}) : super(key: key);
+class TodaysTask extends StatefulWidget {
+  var loginList;
+
+  TodaysTask({Key? key, required this.loginList}) : super(key: key);
+
+  @override
+  State<TodaysTask> createState() => _TodaysTaskState();
+}
+
+class _TodaysTaskState extends State<TodaysTask> with TickerProviderStateMixin {
+  AllShipmentController allShipmentController =
+      Get.put(AllShipmentController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    allShipmentController.fetchAllShipmentData(widget.loginList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +62,8 @@ class TodaysTask extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
                       child: Text(
-                        "5",
+                        allShipmentController.allshipmentList!.length
+                            .toString(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -90,7 +110,7 @@ class TodaysTask extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 20),
                         child: Text(
-                          "12",
+                          assigned.$.toString(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
@@ -132,7 +152,7 @@ class TodaysTask extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
                       child: Text(
-                        "5",
+                        "",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,

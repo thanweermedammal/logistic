@@ -13,6 +13,7 @@ import 'package:logistics/models/delivery_model.dart';
 import 'package:logistics/models/deliverydetail_model.dart';
 import 'package:logistics/models/login_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeliveryScreen extends StatefulWidget {
   List<Login> loginList = [];
@@ -175,12 +176,16 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                               ),
                               child: ElevatedButton(
                                 onPressed: () async {
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
                                   if (_scanBarcode != 'Unknown') {
                                     if (_scanBarcode != '-1') {
                                       var response = await http.get(Uri.parse(
                                           'http://185.188.127.100/WaselleApi/api/Shipment/GetRunsheetDetails?DriverId=${widget.loginList.first.dId}&BranchId=${widget.loginList.first.bId}&RunsheetId=${_scanBarcode}'));
                                       final deliveryData =
                                           jsonDecode(response.body);
+                                      prefs.setString('barcode', _scanBarcode);
+
                                       if (response.statusCode == 200) {
                                         print('ok');
 
@@ -199,7 +204,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                                       deliveryDetailsList:
                                                           deliveryDetailslist,
                                                       loginList:
-                                                          widget.loginList, runsheet: _scanBarcode,
+                                                          widget.loginList,
+                                                      runsheet: _scanBarcode,
                                                     )));
                                       }
                                     }

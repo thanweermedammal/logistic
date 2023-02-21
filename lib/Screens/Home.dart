@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logistics/Screens/delivery_screen.dart';
 import 'package:logistics/Screens/packages_menu.dart';
+import 'package:logistics/Screens/pastdeliveryscreen.dart';
 import 'package:logistics/Screens/pickup_screen.dart';
 import 'package:logistics/components/home/todaystask.dart';
 import 'package:logistics/controller/allshipment_controller.dart';
@@ -100,6 +101,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     allShipmentController.fetchAllShipmentData(widget.loginList);
 
     loadingMap = true;
@@ -237,7 +239,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            TodaysTask(),
+            TodaysTask(
+              loginList: widget.loginList,
+            ),
             // SizedBox(
             //   height: 10,
             // ),
@@ -338,25 +342,59 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                          Image.asset(
-                            "assets/images/revenueicon.png",
-                            height: 30,
-                            color: Colors.orange,
-                          ),
-                          Text(
-                            "Revenue",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PastDelivery(
+                                      loginList: widget.loginList,
+                                    )),
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            Image.asset(
+                              "assets/images/bottom2.png",
+                              height: 32,
+                              color: Colors.yellow,
                             ),
-                          ),
-                        ],
+                            Text(
+                              "Today's",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            Image.asset(
+                              "assets/images/revenueicon.png",
+                              height: 30,
+                              color: Colors.orange,
+                            ),
+                            Text(
+                              "Revenue",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -541,3 +579,4 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     );
   }
 }
+// Delivery Confirmed by Driver

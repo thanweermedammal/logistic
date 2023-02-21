@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hex_color/flutter_hex_color.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:logistics/Screens/deliveydatas_screen.dart';
 import 'package:logistics/Screens/home_screen.dart';
 import 'package:logistics/Screens/maplocation_screen.dart';
@@ -13,12 +14,13 @@ class VerificationDelivery extends StatefulWidget {
   List<DeliveryDetails> deliveryDetailsList = [];
   int index;
   List<Login> loginList = [];
+
   final runsheet;
   VerificationDelivery(
       {Key? key,
       required this.deliveryDetailsList,
       required this.index,
-        required this.runsheet,
+      required this.runsheet,
       required this.loginList})
       : super(key: key);
 
@@ -28,6 +30,7 @@ class VerificationDelivery extends StatefulWidget {
 
 class _VerificationDeliveryState extends State<VerificationDelivery> {
   final now = DateTime.now();
+  bool loading = false;
 
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
@@ -566,54 +569,73 @@ class _VerificationDeliveryState extends State<VerificationDelivery> {
                                         style: ElevatedButton.styleFrom(
                                           primary: HexColor('17aeb4'),
                                         ),
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            var response = await http.post(
-                                                Uri.parse(
-                                                    'http://185.188.127.100/WaselleApi/api/Shipment/DeliveredByDriver?BranchId=${widget.loginList.first.bId}&ShipmentId=${widget.deliveryDetailsList[widget.index].shipmentId}&Barcode=${widget.deliveryDetailsList[widget.index].barcode}&CODAmount=${amountReceivedController.text}&CollectedShippingCharge=${widget.deliveryDetailsList[widget.index].shippingCharge}'));
-                                            if (response.statusCode == 200) {
-                                              print('Sucess');
-                                              print(response.body);
-                                              final snackBar = SnackBar(
-                                                  content: Text(
-                                                      'Successfully Delivered ${response.body}'));
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
-                                              if (response.body != 0) {
-                                                if (widget.deliveryDetailsList
-                                                        .length ==
-                                                    widget.index + 1) {
-                                                  // CircularProgressIndicator();
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              HomeScreen(widget
-                                                                  .loginList)));
-                                                } else {
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DeliveryDatasScreen(
+                                        child: loading == true
+                                            ? LoadingIndicator(
+                                                indicatorType: Indicator
+                                                    .ballSpinFadeLoader,
+                                                colors: [Colors.white],
+                                              )
+                                            : GestureDetector(
+                                                onTap: () async {
+                                                  setState(() {
+                                                    loading = true;
+                                                  });
+                                                  var response =
+                                                      await http.post(Uri.parse(
+                                                          'http://185.188.127.100/WaselleApi/api/Shipment/DeliveredByDriver?BranchId=${widget.loginList.first.bId}&ShipmentId=${widget.deliveryDetailsList[widget.index].shipmentId}&Barcode=${widget.deliveryDetailsList[widget.index].barcode}&CODAmount=${amountReceivedController.text}&CollectedShippingCharge=${widget.deliveryDetailsList[widget.index].shippingCharge}'));
+                                                  if (response.statusCode ==
+                                                      200) {
+                                                    print('Sucess');
+                                                    print(response.body);
+                                                    final snackBar = SnackBar(
+                                                        content: Text(
+                                                            'Successfully Delivered ${response.body}'));
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(snackBar);
+                                                    if (response.body != 0) {
+                                                      if (widget
+                                                              .deliveryDetailsList
+                                                              .length ==
+                                                          widget.index + 1) {
+                                                        // CircularProgressIndicator();
+                                                        Navigator.pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    HomeScreen(
+                                                                        widget
+                                                                            .loginList)));
+                                                      } else {
+                                                        Navigator
+                                                            .pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            DeliveryDatasScreen(
+                                                                              loginList: widget.loginList,
+                                                                              runsheet: widget.runsheet,
+                                                                            )));
+                                                      }
+                                                    }
+                                                  } else {
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
 
-                                                                  loginList: widget
-                                                                      .loginList, runsheet: widget.runsheet,)));
-                                                }
-                                              }
-                                            } else {
-                                              print(response.statusCode);
-                                            }
-                                          },
-                                          child: Text(
-                                            "Delivered",
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w400,
-                                              color: Color(0xffffffff),
-                                            ),
-                                          ),
-                                        ),
+                                                    print(response.statusCode);
+                                                  }
+                                                },
+                                                child: Text(
+                                                  "Delivered",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
                                       ),
                                     ),
                                   ],

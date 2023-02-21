@@ -7,12 +7,14 @@ import 'package:logistics/models/shipment_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:logistics/provider/listprovider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AllShipmentService {
   List<ModelFile> allshipmentList = [];
   List<CustomerDetails> customerDetailslist = [];
   List<Login> loginList1 = [];
   Future getAllShipmentData(loginList) async {
+    // final prefs = await SharedPreferences.getInstance();
     loginList1 = loginList;
     final response = await http.get(Uri.parse(
         'http://185.188.127.100/WaselleApi/api/PickUp/GetPickUpRequest?DriverId=${loginList.first.dId}&BranchId=${loginList.first.bId}'));
@@ -20,9 +22,10 @@ class AllShipmentService {
     print(response.statusCode);
     // print(allshipmentData.length);
     // List<ModelFile> allshipmentList = [];
+
     allshipmentList =
         List<ModelFile>.from(allshipmentData.map((x) => ModelFile.fromJson(x)));
-
+    // prefs.setInt('totalpickup', allshipmentList.length);
     return allshipmentList;
   }
 
